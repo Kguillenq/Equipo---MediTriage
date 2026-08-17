@@ -47,4 +47,22 @@ Disminuir los tiempos críticos de espera y optimizar la categorización clínic
 
 ## Política de IA:
 
+### 1. Principio de Asistencia y No Sustitución (Human-in-the-Loop)
+* El motor de IA actúa estrictamente como una **herramienta de soporte a la decisión clínica** y no como un diagnosticador autónomo.
+* La categorización ESI sugerida y su justificación son recomendaciones; **la decisión final de priorización y atención médica recae exclusivamente en el personal de salud (enfermera/o de triage o médico de turno)**.
+* En casos de discrepancia entre el criterio clínico humano y la sugerencia algorítmica, siempre prevalecerá el juicio del profesional de salud, quedando registrado el motivo del cambio en el sistema.
+
+### 2. Privacidad y Regla de Cero Fuga de Datos (Zero PII Leakage)
+* **Cumplimiento Legal:** En estricto apego a las Leyes 19.628 y 21.719, queda terminantemente prohibido el envío de Datos de Identificación Personal (PII) —como RUT, nombres, apellidos, domicilios, teléfonos o emails— a modelos de lenguaje o servicios de IA externos.
+* **Pipeline de Anonimización:** Antes de procesar cualquier inferencia, el sistema debe ejecutar una capa obligatoria de disociación y sanitización en el backend. La IA únicamente recibirá variables clínicas esenciales: edad, sexo biológico, signos vitales numéricos y descripción estandarizada de síntomas.
+* **Prohibición de Datos Reales en Pruebas:** Los entornos de desarrollo, tests automatizados y validaciones del modelo deben operar exclusivamente con datos sintéticos generados.
+
+### 3. Explicabilidad, Transparencia y Trazabilidad
+* **Caja Blanca:** Todo resultado entregado por el modelo debe incluir de forma obligatoria una justificación clínica en lenguaje natural que explique de forma comprensible el porqué del nivel ESI sugerido (basándose en estabilidad fisiológica, recursos estimados y riesgo vital).
+* **Inmutabilidad:** Cada prompt enviado, la respuesta íntegra del modelo, la versión del algoritmo utilizado y la decisión final del profesional quedarán registrados en un *Audit Log* inmutable, conservado por un mínimo de 5 años.
+
+### 4. Mitigación de Sesgos y Seguridad Clínica
+* El modelo no debe utilizar variables socioeconómicas, de procedencia geográfica o previsionales (Fonasa/Isapre) para ponderar la gravedad del paciente.
+* Todo cambio o ajuste de prompts (*prompt engineering*) o cambio de modelo de IA debe ser previamente validado con una batería de pruebas de casos clínicos límite (ej. paro inminente, shock anafiláctico) antes de pasar a producción.
+
 ## Canal Slack:
