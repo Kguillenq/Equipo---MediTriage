@@ -45,6 +45,16 @@ Disminuir los tiempos críticos de espera y optimizar la categorización clínic
 
 ## DoD:
 
+1- Criterios de Aceptación Cumplidos: La historia de usuario o funcionalidad cuenta con escenarios BDD (Given / When / Then) probados y aprobados por QA.
+
+2- Cobertura de Pruebas: Mínimo 80% de cobertura en pruebas unitarias e integración para componentes clave (backend, frontend y llamadas al modelo).
+
+3- Zero PII Leakage y Privacidad: Garantizar el filtrado de RUT y datos personales antes de enviar información a la IA, operando solo con datos sintéticos en pruebas (Ley 19.628 / Ley 21.719).
+
+4- Rendimiento y Explicabilidad: La clasificación ESI responde en menos de 3 segundos e incluye obligatoriamente una justificación clínica en lenguaje natural.
+
+5- Aprobación de Pull Request: Código revisado y aprobado por al menos 1 integrante mediante Pull Request asociado a un Issue en GitHub.
+
 ## Política de IA:
 
 ### 1. Principio de Asistencia y No Sustitución (Human-in-the-Loop)
