@@ -80,5 +80,5 @@ Disminuir los tiempos críticos de espera y optimizar la categorización clínic
 ### Canales de Comunicación
 
 * **Canal de Slack del Proyecto:** https://discord.gg/kY8pJNr2zg
-* 
+
 * **Comunidad de WhatsApp:** https://chat.whatsapp.com/L8Gsl4UswJVGJHbh5qdRZV
