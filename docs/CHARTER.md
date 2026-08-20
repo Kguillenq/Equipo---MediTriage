@@ -6,7 +6,7 @@ Desarrollar, desplegar y operar una plataforma de triage clínico asistida por I
 
 ## Valores:
 
-Los valores constan en convertirse en el estándar tecnológico de apoyo a la decisión clínica en salas de espera de urgencia en Chile, humanizando la atención mediante tecnología rápida, confiable e invisible que empodere al personal de salud.
+Nos comprometemos con la humanización de la atención médica mediante el desarrollo de tecnología rápida, confiable e invisible que empodere al personal de salud, estableciendo un nuevo estándar de seguridad, transparencia y apoyo a la decisión clínica en las salas de urgencia de Chile.
 
 ## Reglas de trabajo:
 
@@ -76,3 +76,9 @@ Disminuir los tiempos críticos de espera y optimizar la categorización clínic
 * Todo cambio o ajuste de prompts (*prompt engineering*) o cambio de modelo de IA debe ser previamente validado con una batería de pruebas de casos clínicos límite (ej. paro inminente, shock anafiláctico) antes de pasar a producción.
 
 ## Canal Slack:
+
+### Canales de Comunicación
+
+* **Canal de Slack del Proyecto:** https://discord.gg/kY8pJNr2zg
+* 
+* **Comunidad de WhatsApp:** https://chat.whatsapp.com/L8Gsl4UswJVGJHbh5qdRZV
