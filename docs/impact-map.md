@@ -6,6 +6,8 @@ Reducir el tiempo de priorización clínica de los pacientes en la sala de urgen
 ## 2. Actores Clave
 1. **Enfermera/o de Triage:** Profesional en la primera línea de atención que ingresa los signos vitales.
 2. **Médico de Turno:** Profesional responsable de la atención definitiva y del manejo de casos críticos de riesgo vital.
+3. **Paciente:** Persona que acude a urgencias y requiere conocer su tiempo de espera y orden de atención.
+4. **Auditor clínico:** Encargado de revisar y verificar que las decisiones automatizadas de la IA cumplan con la normativa y queden registradas.
 
 ## 3. Construcción del Mapa (Goal → Actor → Impacto → Entregable)
 
