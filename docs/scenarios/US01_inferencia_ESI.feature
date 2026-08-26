@@ -10,7 +10,6 @@ And presenta una justificación clínica en lenguaje natural
 And el tiempo de respuesta es menor a 3 segundos
 
 
-
 Scenario: Ingreso parcial de datos clínicos mínimos (🟡)
 
 Given que la enfermera ingresa solo temperatura y frecuencia cardíaca
@@ -20,8 +19,7 @@ And muestra una advertencia indicando que faltan datos complementarios
 But mantiene el tiempo de respuesta bajo 3 segundos
 
 
-
-Scenario: Error por datos inválidos en el formulario
+Scenario: Error por datos inválidos en el formulario (🔴)
 
 Given que la enfermera ingresa valores fuera de rango (ej. temperatura = -5°C)
 When intenta calcular el ESI
