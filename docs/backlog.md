@@ -76,7 +76,7 @@ Este documento contiene el Product Backlog inicial de MediTriage derivado del Im
 * **E (Estimable):** Estimado en **3 Story Points**.
 * **S (Small):** Implementación mediante tabla *append-only* en PostgreSQL.
 * **T (Testable):** Testeable intentando ejecutar operaciones de modificación (`UPDATE`) o borrado (`DELETE`), las cuales deben ser rechazadas por la base de datos.
-```eof
+  
 ---
 ### Priorización MoSCoW
 
