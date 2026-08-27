@@ -86,6 +86,6 @@ Este documento contiene el Product Backlog inicial de MediTriage derivado del Im
 
 **US-03:** Tablero Médico en Tiempo Real y Alertas Críticas (ESI 1 y 2) (**Must have**): Es importante para la comunicación inmediata con el médico ante pacientes con riesgo vital. El triage no es efectivo si no se notifica al instante. 
 
-**US-05:** Registro Inmutable de Auditoría Clínico-Algorítmica (**Should have**): Esto Aporta alto valor de trazabilidad y cumplimiento normativo  de las Leyes 19.628 y 21.719, y se ejecuta en segundo plano, por lo que el triage puede operar si se pospone brevemente. 
+**US-05:** Registro Inmutable de Auditoría Clínico-Algorítmica (**Should have**): Esto aporta alto valor de trazabilidad y cumplimiento normativo  de las Leyes 19.628 y 21.719, y se ejecuta en segundo plano, por lo que el triage puede operar si se pospone brevemente. 
 
 **US-04:** Pantalla Pública de Sala de Espera y Turnos Anonimizados (**Could have**): Esto mejora la experiencia y reduce la ansiedad del paciente en sala de espera, pero su ausencia no interrumpe ni frena la operación clínica del personal de urgencias.
