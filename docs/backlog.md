@@ -79,6 +79,7 @@ Este documento contiene el Product Backlog inicial de MediTriage derivado del Im
 ```eof
 
 ---
+### Priorización MoSCoW
 
 **US-01:** Formulario e Inferencia ESI Asistida por IA (**Must have**):Es una funcionalidad clave del sistema, ya que permite reducir el tiempo de evaluación de 25 a menos de 3 minutos, que es uno de nuestro mayores propositos para este proyecto.
 **US-02:** Manual de sobreescritura de ESI (Human-in-the-Loop) (**Must have**): Requisito ético y legal indispensable para asegurar que el criterio clínico de la enfermera/o prevalezca siempre sobre el programa antes de guardar los datos. 
