@@ -1,4 +1,4 @@
-# ADR 0002 — Elección del motor de IA para MediTriage
+# ADR IA - 001 — Elección del motor de IA para MediTriage
 
 ## Fecha
 
