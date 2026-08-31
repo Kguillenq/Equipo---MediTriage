@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: meditriage-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - DATABASE_URL=postgresql://meditriage_user:meditriage_pass@db:5432/meditriage_db
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15-alpine
+    container_name: meditriage-db
+    restart: always
+    environment:
+      POSTGRES_USER: meditriage_user
+      POSTGRES_PASSWORD: meditriage_pass
+      POSTGRES_DB: meditriage_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
