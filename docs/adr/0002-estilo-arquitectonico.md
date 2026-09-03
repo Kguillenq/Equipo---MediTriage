@@ -1,12 +1,10 @@
 # ADR 0002 - Estilo arquitectonico elegido: Monolito modular (arquitectura en capas)
 ---
 # Fecha
- 
 03/09/26
 
 ---
 ## Autores
-
 Josefa Rodriguez, Lucas Benítez, Marcela Contreras, Isidora Ramos, Antonia Moya y Kimberlly Guillén
 
 ---
