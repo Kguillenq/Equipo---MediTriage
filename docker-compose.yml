@@ -11,7 +11,7 @@ services:
     volumes:
       - ./backend:/app
     environment:
-      - DATABASE_URL=postgresql://meditriage_user:meditriage_pass@db:5432/meditriage_db
+      - DATABASE_URL=postgresql://meditriage_user:meditriage_pass@db:5432/meditriage_db?sslmode=require
     depends_on:
       - db
 
