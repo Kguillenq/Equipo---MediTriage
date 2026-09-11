@@ -1,7 +1,7 @@
 # Checklist de los 12 Factores
 
-| # | Factor | Aspecto / Sub-ítem | Estado | Acción Concreta | Responsable |
-|---|---|---|---|---|---|
+| # | Factor | Estado | Acción Concreta | Responsable |
+|---|---|---|---|---|
 | *01 Codebase* | Repositorios de código | Cumple | Verificar que cada microservicio mantenga un repositorio de Git totalmente independiente y asegurar que no exista código duplicado o copiado manualmente entre diferentes servicios. | Lucas Benítez (Jefe técnico) |
 | *02 Dependencies* | Declaración y aislamiento | Cumple | Validar que todos los archivos de definición de dependencias estén completos y bloqueados (ej. `package-lock.json`, `poetry.lock`), garantizando que la aplicación no dependa de librerías preinstaladas en el sistema operativo. | Isidora Ramos (DevSecOps) y Lucas Benítez (Jefe técnico) |
 | *03 Config* | Variables de entorno | Cumple | Inyección de configuración mediante variables de entorno consumidas por Pydantic Settings (`DATABASE_URL`, credenciales y entorno). Ningún secreto se expone en el repositorio Git. | Backend Lead |
