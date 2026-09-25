@@ -14,6 +14,7 @@ services:
       - DATABASE_URL=postgresql://meditriage_user:meditriage_pass@db:5432/meditriage_db?sslmode=require
     depends_on:
       - db
+      - redis
 
   db:
     image: postgres:15-alpine
@@ -27,7 +28,14 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  redis:
+    image: redis:7-alpine
+    container_name: meditriage-redis
+    restart: always
+    ports:
+      - "6379:6379"
 
 volumes:
-  - postgres_data:/var/lib/postgresql/data
-  - ./init.sql:/docker-entrypoint-initdb.d/init.sql- 
+  postgres_data:
