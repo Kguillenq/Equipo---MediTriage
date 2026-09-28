@@ -16,7 +16,8 @@ Sirve como contrato base para que los equipos de Frontend y Backend puedan traba
 | :--- | :--- | :--- |
 | **POST** | `/triages` | Crea una nueva evaluación de triage. Recibe síntomas y signos vitales; retorna la sugerencia ESI de la IA. |
 | **GET** | `/triages` | Obtiene la lista de triages activos. Soporta filtros (ej. `?status=waiting&sort=esi_level`) para el Tablero Médico. |
-| **PATCH**| `/triages/{triage_id}`| Actualiza un triage específico (ej. sobrescritura manual del ESI por enfermería o cambio de estado a "En Atención"). |
+| **PATCH**| `/triages/{triage_id}`| Actualiza el estado general de un paciente (ej. el médico lo cambia de "En espera" a "En Atención" o "Alta"). |
+| **POST** | `/triages/{triage_id}/overrides` | Sobrescribe el nivel ESI de la IA. Requiere enviar el nuevo nivel ESI y la **justificación clínica** obligatoria (acción auditable). |
 
 ## 📋 3. Dominio: Auditoría y Trazabilidad
 
