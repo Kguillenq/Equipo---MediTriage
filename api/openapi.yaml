@@ -187,3 +187,72 @@ responses:
 description: Historial de auditoría devuelto
 '403':
 description: Permisos insuficientes (requiere rol de auditor)
+components:
+  schemas:
+    # Aquí definimos la estructura de los datos (Modelos)
+    Patient:
+      type: object
+      properties:
+        rut:
+          type: string
+          example: "11.111.111-1"
+        name:
+          type: string
+          example: "Juan Pérez"
+        has_consent:
+          type: boolean
+          example: true
+    TriageOverride:
+      type: object
+      required:
+        - new_esi_level
+        - justification
+      properties:
+        new_esi_level:
+          type: integer
+          example: 2
+        justification:
+          type: string
+          example: "Paciente presenta dificultad respiratoria severa no captada en triage inicial."
+
+  responses:
+    # Respuestas estándar de error para reutilizar
+    NotFound:
+      description: El recurso solicitado no fue encontrado en la base de datos.
+    Unauthorized:
+      description: Token JWT faltante o inválido.
+    ValidationError:
+      description: Los datos enviados no cumplen con el formato esperado.
+
+  parameters:
+    # Parámetros que se repiten en varias rutas (como la paginación)
+    SkipParam:
+      name: skip
+      in: query
+      description: Cantidad de registros a saltar (paginación).
+      required: false
+      schema:
+        type: integer
+        default: 0
+    LimitParam:
+      name: limit
+      in: query
+      description: Cantidad máxima de registros a devolver.
+      required: false
+      schema:
+        type: integer
+        default: 20
+    TriageIdParam:
+      name: triage_id
+      in: path
+      description: ID único de la evaluación de triage.
+      required: true
+      schema:
+        type: string
+
+  securitySchemes:
+    # Método de autenticación (el que usará tu Login de FastAPI)
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
