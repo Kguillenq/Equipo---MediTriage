@@ -432,7 +432,20 @@ components:
       required: true
       schema:
         type: string
-
+    IdempotencyKeyHeader:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: >
+        Clave única (UUID v4) generada por el cliente para que un POST pueda reintentarse
+        sin duplicar el efecto. Si se repite la misma clave con el mismo cuerpo, el servidor
+        devuelve la respuesta de la solicitud original sin volver a ejecutarla. Si se repite
+        con un cuerpo distinto, o mientras la original sigue en proceso, responde 409.
+        Las claves se conservan 24 horas.
+      schema:
+        type: string
+        format: uuid
+        example: "3f8a6c1e-5b7d-4e2a-9c41-2d8f0a7b6e13"
   securitySchemes:
     # Método de autenticación (el que usará tu Login de FastAPI)
     BearerAuth:
