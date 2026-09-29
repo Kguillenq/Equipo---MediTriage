@@ -14,6 +14,9 @@ description: Servidor Local (Desarrollo)
 url: https://api.meditriage.com/v1
 description: Servidor de Producción
 
+security:
+  - BearerAuth: []
+
 tags:
 
 name: Pacientes
