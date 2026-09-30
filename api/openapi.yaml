@@ -1,198 +1,191 @@
 openapi: 3.0.3
 info:
-title: MediTriage API
-description: API RESTful principal para el sistema de priorización de pacientes y asistencia clínica mediante IA.
-version: 1.0.0
-contact:
-name: Equipo MediTriage
+  title: MediTriage API
+  description: API RESTful principal para el sistema de priorización de pacientes y asistencia clínica mediante IA.
+  version: 1.0.0
+  contact:
+    name: Equipo MediTriage
 
 servers:
-
-url: http://localhost:8000/api/v1
-description: Servidor Local (Desarrollo)
-
-url: https://api.meditriage.com/v1
-description: Servidor de Producción
+  - url: http://localhost:8000/api/v1
+    description: Servidor Local (Desarrollo)
+  - url: https://api.meditriage.com/v1
+    description: Servidor de Producción
 
 security:
   - BearerAuth: []
 
 tags:
-
-name: Pacientes
-description: Gestión de pacientes en admisión y sala de espera.
-
-name: Triages
-description: Creación de evaluaciones, IA y actualización de estados.
-
-name: Auditoría
-description: Trazabilidad y logs inmutables de decisiones médicas.
+  - name: Pacientes
+    description: Gestión de pacientes en admisión y sala de espera.
+  - name: Triages
+    description: Creación de evaluaciones, IA y actualización de estados.
+  - name: Auditoría
+    description: Trazabilidad y logs inmutables de decisiones médicas.
 
 paths:
-/patients:
-post:
-tags:
-- Pacientes
-summary: Registra un nuevo paciente
-operationId: createPatient
-responses:
-'201':
-description: Paciente creado exitosamente
-'400':
-description: Datos inválidos
-'409':
-description: Conflicto - Paciente ya existe
+  /patients:
+    post:
+      tags:
+        - Pacientes
+      summary: Registra un nuevo paciente
+      operationId: createPatient
+      responses:
+        '201':
+          description: Paciente creado exitosamente
+        '400':
+          description: Datos inválidos
+        '409':
+          description: Conflicto - Paciente ya existe
 
-get:
-  tags:
-    - Pacientes
-  summary: Obtiene la lista de pacientes
-  operationId: listPatients
-  parameters:
-    - name: skip
-      in: query
-      description: Paginación - registros a saltar
-      schema:
-        type: integer
-        default: 0
-    - name: limit
-      in: query
-      description: Paginación - límite de registros
-      schema:
-        type: integer
-        default: 20
-    - name: rut
-      in: query
-      schema:
-        type: string
-    - name: name
-      in: query
-      schema:
-        type: string
-  responses:
-    '200':
-      description: Lista de pacientes devuelta con éxito
+    get:
+      tags:
+        - Pacientes
+      summary: Obtiene la lista de pacientes
+      operationId: listPatients
+      parameters:
+        - name: skip
+          in: query
+          description: Paginación - registros a saltar
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          description: Paginación - límite de registros
+          schema:
+            type: integer
+            default: 20
+        - name: rut
+          in: query
+          schema:
+            type: string
+        - name: name
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lista de pacientes devuelta con éxito
 
+  /triages:
+    post:
+      tags:
+        - Triages
+      summary: Crea una evaluación de triage y consulta IA
+      operationId: createTriage
+      responses:
+        '201':
+          description: Triage creado y evaluado por IA
+        '422':
+          description: Error de validación en signos vitales
 
-/triages:
-post:
-tags:
-- Triages
-summary: Crea una evaluación de triage y consulta IA
-operationId: createTriage
-responses:
-'201':
-description: Triage creado y evaluado por IA
-'422':
-description: Error de validación en signos vitales
+    get:
+      tags:
+        - Triages
+      summary: Lista de triages activos (Tablero Médico)
+      operationId: listTriages
+      parameters:
+        - name: skip
+          in: query
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [waiting, attending, discharged]
+        - name: esi_level
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 5
+        - name: sort
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lista de triages priorizados
 
-get:
-  tags:
-    - Triages
-  summary: Lista de triages activos (Tablero Médico)
-  operationId: listTriages
-  parameters:
-    - name: skip
-      in: query
-      schema:
-        type: integer
-        default: 0
-    - name: limit
-      in: query
-      schema:
-        type: integer
-        default: 50
-    - name: status
-      in: query
-      schema:
-        type: string
-        enum: [waiting, attending, discharged]
-    - name: esi_level
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 5
-    - name: sort
-      in: query
-      schema:
-        type: string
-  responses:
-    '200':
-      description: Lista de triages priorizados
+  /triages/{triage_id}:
+    patch:
+      tags:
+        - Triages
+      summary: Actualiza el estado de flujo del paciente
+      operationId: updateTriageStatus
+      parameters:
+        - name: triage_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Estado actualizado exitosamente
+        '404':
+          description: Evaluación no encontrada
 
+  /triages/{triage_id}/overrides:
+    post:
+      tags:
+        - Triages
+      summary: Sobrescribe el nivel ESI sugerido por la IA
+      operationId: overrideTriageEsi
+      parameters:
+        - name: triage_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Sobrescritura registrada exitosamente
+        '400':
+          description: Falta justificación clínica
+        '404':
+          description: Evaluación no encontrada
 
-/triages/{triage_id}:
-patch:
-tags:
-- Triages
-summary: Actualiza el estado de flujo del paciente
-operationId: updateTriageStatus
-parameters:
-- name: triage_id
-in: path
-required: true
-schema:
-type: string
-responses:
-'200':
-description: Estado actualizado exitosamente
-'404':
-description: Evaluación no encontrada
+  /audit-logs:
+    get:
+      tags:
+        - Auditoría
+      summary: Obtiene el historial inmutable de discrepancias
+      operationId: listAuditLogs
+      parameters:
+        - name: skip
+          in: query
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: has_discrepancy
+          in: query
+          schema:
+            type: boolean
+        - name: user_id
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Historial de auditoría devuelto
+        '403':
+          description: Permisos insuficientes (requiere rol de auditor)
 
-/triages/{triage_id}/overrides:
-post:
-tags:
-- Triages
-summary: Sobrescribe el nivel ESI sugerido por la IA
-operationId: overrideTriageEsi
-parameters:
-- name: triage_id
-in: path
-required: true
-schema:
-type: string
-responses:
-'201':
-description: Sobrescritura registrada exitosamente
-'400':
-description: Falta justificación clínica
-'404':
-description: Evaluación no encontrada
-
-/audit-logs:
-get:
-tags:
-- Auditoría
-summary: Obtiene el historial inmutable de discrepancias
-operationId: listAuditLogs
-parameters:
-- name: skip
-in: query
-schema:
-type: integer
-default: 0
-- name: limit
-in: query
-schema:
-type: integer
-default: 20
-- name: has_discrepancy
-in: query
-schema:
-type: boolean
-- name: user_id
-in: query
-schema:
-type: string
-responses:
-'200':
-description: Historial de auditoría devuelto
-'403':
-description: Permisos insuficientes (requiere rol de auditor)
 components:
   schemas:
-    # Aquí definimos la estructura de los datos (Modelos)
     Patient:
       type: object
       properties:
@@ -219,7 +212,6 @@ components:
           example: "Paciente presenta dificultad respiratoria severa no captada en triage inicial."
 
   responses:
-    # Respuestas estándar de error para reutilizar
     NotFound:
       description: El recurso solicitado no fue encontrado en la base de datos.
     Unauthorized:
@@ -228,7 +220,6 @@ components:
       description: Los datos enviados no cumplen con el formato esperado.
 
   parameters:
-    # Parámetros que se repiten en varias rutas (como la paginación)
     SkipParam:
       name: skip
       in: query
@@ -254,8 +245,8 @@ components:
         type: string
 
   securitySchemes:
-    # Método de autenticación (el que usará tu Login de FastAPI)
     BearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
+      
