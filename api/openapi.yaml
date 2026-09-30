@@ -11,7 +11,8 @@ servers:
     description: Servidor Local (Desarrollo)
   - url: https://api.meditriage.com/v1
     description: Servidor de Producción
-
+security:
+  - BearerAuth: []
 tags:
   - name: Pacientes
     description: Gestión de pacientes en admisión y sala de espera.
@@ -26,6 +27,7 @@ paths:
       tags:
         - Pacientes
       summary: Registra un nuevo paciente
+      description: Crea un paciente en admisión. Requiere consentimiento informado y acepta Idempotency-Key para reintentos seguros
       operationId: createPatient
       parameters:
         - $ref: '#/components/parameters/IdempotencyKeyHeader'
@@ -57,6 +59,7 @@ paths:
       tags:
         - Pacientes
       summary: Obtiene la lista de pacientes
+      description: Devuelve la lista de pacientes
       operationId: listPatients
       parameters:
         - name: skip
@@ -100,6 +103,7 @@ paths:
       tags:
         - Triages
       summary: Crea una evaluación de triage y consulta IA
+      description: Crea una evaluación de triage con los signos vitales y síntomas, y pide a la IA un nivel ESI sugerido con su justificación
       operationId: createTriage
       parameters:
         - $ref: '#/components/parameters/IdempotencyKeyHeader'
@@ -131,6 +135,7 @@ paths:
       tags:
         - Triages
       summary: Lista de triages activos (Tablero Médico)
+      description: Devuelve los triages activos para el tablero médico
       operationId: listTriages
       parameters:
         - name: skip
@@ -176,6 +181,7 @@ paths:
       tags:
         - Triages
       summary: Actualiza el estado de flujo del paciente
+      description: Cambia el estado del paciente en el flujo de atención
       operationId: updateTriageStatus
       parameters:
         - name: triage_id
@@ -212,6 +218,7 @@ paths:
       tags:
         - Triages
       summary: Sobrescribe el nivel ESI sugerido por la IA
+      description: Permite al personal médico reemplazar el nivel ESI sugerido por la IA, indicando una justificación clínica. Queda registrado en la auditoría
       operationId: overrideTriageEsi
       parameters:
         - name: triage_id
@@ -251,6 +258,7 @@ paths:
       tags:
         - Auditoría
       summary: Obtiene el historial inmutable de discrepancias
+      description: Devuelve el historial de auditoría con filtros por discrepancia
       operationId: listAuditLogs
       parameters:
         - name: skip
