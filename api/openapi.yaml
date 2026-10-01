@@ -109,7 +109,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 
   /triages:
-        post:
+    post:
       tags:
         - Triages
       summary: Crea una evaluación de triage y consulta IA
