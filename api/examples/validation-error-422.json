@@ -1,0 +1,13 @@
+{
+  "type": "https://api.meditriage.com/problems/validation-error",
+  "title": "Error de validación",
+  "status": 422,
+  "detail": "Los datos enviados no cumplen las reglas de validación.",
+  "instance": "/api/v1/triages",
+  "errors": [
+    {
+      "field": "vital_signs.heart_rate",
+      "message": "Debe estar entre 20 y 300."
+    }
+  ]
+}
