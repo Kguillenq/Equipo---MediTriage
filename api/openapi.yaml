@@ -779,6 +779,17 @@ components:
         type: string
         format: uuid
         example: "3f8a6c1e-5b7d-4e2a-9c41-2d8f0a7b6e13"
+  
+  examples:
+    PatientCreate:
+      summary: Ejemplo de registro de paciente
+      externalValue: './examples/patient-create.json'
+    TriageCreate:
+      summary: Ejemplo de creación de triage
+      externalValue: './examples/triage-create.json'
+    ValidationError422:
+      summary: Ejemplo de error de validación
+      externalValue: './examples/validation-error-422.json'
 
  
   securitySchemes:
