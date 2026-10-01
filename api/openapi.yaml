@@ -41,7 +41,7 @@ paths:
               PatientCreate:
                 $ref: '#/components/examples/PatientCreate'
       responses:
-         '201':
+        '201':
           description: Paciente creado exitosamente
           content:
             application/json:
