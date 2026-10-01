@@ -139,13 +139,38 @@ paths:
                       - codigo_sintoma: "SINT-034"
                         severidad: moderada
                         tiempo_evolucion_horas: 2
-      responses:
-        '201':
+      '201':
           description: Triage creado y evaluado por IA
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Triage'
+              example:
+                triage_id: "660e8400-e29b-41d4-a716-446655440001"
+                patient:
+                  patient_id: "550e8400-e29b-41d4-a716-446655440000"
+                  age: 36
+                  biological_sex: male
+                status: waiting
+                symptoms:
+                  presion_sistolica: 120
+                  presion_diastolica: 80
+                  frecuencia_cardiaca: 90
+                  frecuencia_respiratoria: 18
+                  temperatura: 37.0
+                  saturacion_oxigeno: 98
+                  escala_dolor: 3
+                  nivel_conciencia: Alerta
+                  sintomas:
+                    - codigo_sintoma: "SINT-034"
+                      severidad: moderada
+                      tiempo_evolucion_horas: 2
+                ai_recommendation:
+                  nivel_esi_sugerido: 3
+                  justificacion_ia: "Signos vitales estables y síntomas de severidad moderada."
+                  modelo_usado: "claude-3-haiku"
+                  tiempo_respuesta: "2026-10-01T12:00:00Z"
+                final_esi_level: null
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
