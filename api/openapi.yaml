@@ -31,15 +31,15 @@ paths:
       operationId: createPatient
       parameters:
         - $ref: '#/components/parameters/IdempotencyKeyHeader'
-      requestBody:
+       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/PatientInput'
-              examples: 
-                PatientCreate:
-                  $ref: '#components/examples/PatientCreate'
+            examples:
+              PatientCreate:
+                $ref: '#/components/examples/PatientCreate'
       responses:
          '201':
           description: Paciente creado exitosamente
