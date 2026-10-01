@@ -754,3 +754,14 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+
+    examples:
+    PatientCreate:
+      summary: Ejemplo de registro de paciente
+      externalValue: './examples/patient-create.json'
+    TriageCreate:
+      summary: Ejemplo de creación de triage
+      externalValue: './examples/triage-create.json'
+    ValidationError422:
+      summary: Ejemplo de error de validación
+      externalValue: './examples/validation-error-422.json'
