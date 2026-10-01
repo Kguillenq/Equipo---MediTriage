@@ -41,12 +41,19 @@ paths:
                 PatientCreate:
                   $ref: '#components/examples/PatientCreate'
       responses:
-        '201':
+         '201':
           description: Paciente creado exitosamente
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Patient'
+              example:
+                patient_id: "550e8400-e29b-41d4-a716-446655440000"
+                rut: "11.111.111-1"
+                name: "Juan Perez"
+                birth_date: "1990-05-15"
+                biological_sex: "male"
+                has_consent: true
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
