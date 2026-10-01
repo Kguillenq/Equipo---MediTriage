@@ -1,0 +1,10 @@
+{
+  "patient_id": "550e8400-e29b-41d4-a716-446655440000",
+  "vital_signs": {
+    "heart_rate": 90,
+    "respiratory_rate": 18,
+    "temperature": 37.0,
+    "oxygen_saturation": 98
+  },
+  "symptoms": []
+}
