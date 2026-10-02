@@ -205,3 +205,12 @@ Los mocks pueden utilizarse en pruebas unitarias aisladas cuando sea necesario v
 
 ✅ **Criterio de cumplimiento:** Todo el equipo debe ejecutar la aplicación utilizando los servicios reales definidos en `docker-compose.yml`, evitando diferencias de comportamiento entre desarrollo y producción.
 
+---
+
+## 🧪 Servidor Mock de la API (Prism)
+
+Para levantar un servidor mock local basado en el contrato OpenAPI de MediTriage y probar los endpoints antes de desplegar el backend:
+
+```bash
+npx @stoplight/prism-cli mock API/openapi.yaml -p 4010
+```
