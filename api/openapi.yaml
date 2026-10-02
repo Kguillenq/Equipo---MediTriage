@@ -475,7 +475,7 @@ components:
       properties:
         presion_sistolica: { type: integer, minimum: 40, maximum: 260, description: "mmHg" }
         presion_diastolica: { type: integer, minimum: 20, maximum: 200, description: "mmHg" }
-        frecuencia_cardiaca: { type: integer, minimum: 20, maximum: 250, description: "bpm" }
+        frecuencia_cardiaca: { type: integer, minimum: 20, maximum: 300, description: "bpm" }
         frecuencia_respiratoria: { type: integer, minimum: 5, maximum: 80, description: "rpm" }
         temperatura: { type: number, format: float, minimum: 30, maximum: 43, description: "°C" }
         saturacion_oxigeno: { type: integer, minimum: 0, maximum: 100, description: "%" }
