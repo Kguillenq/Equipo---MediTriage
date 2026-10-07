@@ -7,35 +7,21 @@ Catálogo de eventos de dominio para la arquitectura orientada a eventos de Medi
 ## Resumen del Catálogo de Eventos
 
 | Evento | Versión | Contexto Productor | Contextos Consumidores | Notificación Tiempo Real (WS/SSE) |
-
 | :--- | :---: | :--- | :--- | :---: |
-
 | `paciente.registro.completado` | v1.0 | Admisión y Registro de Pacientes | Triage y Decisión Clínica, Auditoría y Gobernanza | Sí (Actualiza sala) |
-
 | `paciente.constantes_vitales.ingresadas` | v1.0 | Admisión y Registro de Pacientes | Triage y Decisión Clínica, Inferencia y Soporte de IA | No (Evento interno) |
-
 | `triage.evaluacion.iniciada` | v1.0 | Triage y Decisión Clínica | Inferencia y Soporte de IA, Auditoría y Gobernanza | Sí (Estado en evaluación) |
-
 | `ia.clasificacion.solicitada` | v1.0 | Triage y Decisión Clínica | Inferencia y Soporte de IA | No (Interno asíncrono) |
-
 | `ia.clasificacion.sugerida` | v1.0 | Inferencia y Soporte de IA | Triage y Decisión Clínica, Auditoría y Gobernanza | Sí (Sugerencia ESI) |
-
 | `triage.clasificacion.respaldo_aplicada` | v1.0 | Triage y Decisión Clínica | Auditoría y Gobernanza | Sí (Alerta de Fallback) |
-
 | `triage.evaluacion.confirmada` | v1.0 | Triage y Decisión Clínica | Admisión y Registro, Auditoría y Gobernanza | Sí (Asignación de espera) |
-
 | `triage.override.ejecutado` | v1.0 | Triage y Decisión Clínica | Auditoría y Gobernanza | Sí (Cambio prioritario) |
-
 | `paciente.atencion.iniciada` | v1.0 | Triage y Decisión Clínica | Admisión y Registro, Auditoría y Gobernanza | Sí (Llamado a box) |
-
 | `notificacion.alerta.disparada` | v1.0 | Triage y Decisión Clínica | Tablero Frontend (WS) | Sí (Alerta crítica) |
-
 | `audit.registro.creado` | v1.0 | Auditoría y Gobernanza | Almacenamiento Seguro | No (Persistencia) |
-
 | `paciente.alta.registrada` | v1.0 | Admisión y Registro de Pacientes | Triage y Decisión Clínica | Sí (Cierre de ciclo) |
 
 ---
-
 ## Detalle y Esquema de Eventos (JSON Schemas - Zero PII)
 
 ### 1. paciente.registro.completado
@@ -61,6 +47,7 @@ Catálogo de eventos de dominio para la arquitectura orientada a eventos de Medi
     "estado": "en_espera"
   }
 }
+```
 
 ---
 
@@ -92,6 +79,7 @@ Catálogo de eventos de dominio para la arquitectura orientada a eventos de Medi
     "nivel_conciencia": "alerta"
   }
 }
+```
 
 ---
 
@@ -117,6 +105,7 @@ Catálogo de eventos de dominio para la arquitectura orientada a eventos de Medi
     "codigo_turno": "TURNO-A"
   }
 }
+```
 
 ---
 
@@ -143,6 +132,7 @@ Catálogo de eventos de dominio para la arquitectura orientada a eventos de Medi
     "hash_entrada": "a1b2c3d4e5f67890123456789012345678901234567890123456789012345678"
   }
 }
+```
 
 ---
 
@@ -173,6 +163,7 @@ Catálogo de eventos de dominio para la arquitectura orientada a eventos de Medi
     "fecha_hora_solicitud": "2026-10-06T20:06:05Z"
   }
 }
+```
 
 ---
 
@@ -201,6 +192,7 @@ Catálogo de eventos de dominio para la arquitectura orientada a eventos de Medi
     "latencia_ms": 1550
   }
 }
+```
 
 ---
 
@@ -229,6 +221,7 @@ Catálogo de eventos de dominio para la arquitectura orientada a eventos de Medi
     "fecha_hora_decision": "2026-10-06T20:08:00Z"
   }
 }
+```
 
 ---
 
@@ -259,6 +252,7 @@ Catálogo de eventos de dominio para la arquitectura orientada a eventos de Medi
     "fecha_hora_decision": "2026-10-06T20:08:15Z"
   }
 }
+```
 
 ---
 
@@ -284,6 +278,7 @@ Catálogo de eventos de dominio para la arquitectura orientada a eventos de Medi
     "estado": "en_atencion"
   }
 }
+```
 
 ---
 
@@ -309,6 +304,7 @@ Catálogo de eventos de dominio para la arquitectura orientada a eventos de Medi
     "rol_destino": "medico"
   }
 }
+```
 
 ---
 
@@ -342,6 +338,7 @@ Catálogo de eventos de dominio para la arquitectura orientada a eventos de Medi
     "fecha_hora_evento": "2026-10-06T20:08:16Z"
   }
 }
+```
 
 ---
 
@@ -367,3 +364,4 @@ Catálogo de eventos de dominio para la arquitectura orientada a eventos de Medi
     "fecha_hora_evento": "2026-10-06T21:00:00Z"
   }
 }
+```
