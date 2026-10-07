@@ -25,13 +25,13 @@ Este documento define el catálogo de eventos de dominio para la plataforma **Me
 
 ## Detalle y Esquema de Eventos (JSON Schemas - Zero PII)
 
-### 1. `paciente.registro.completado`
+### 1. paciente.registro.completado
 - **Descripción:** Se emite cuando un paciente completa el proceso de admisión e inicia un episodio de triage.
 - **Productor:** Contexto de Admisión y Registro de Pacientes
 - **Consumidores:** Contexto de Triage y Decisión Clínica, Contexto de Auditoría y Gobernanza Médico-Legal
 - **Tiempo Real (WS/SSE):** Sí (Notifica nueva entrada en la lista de espera).
 
-```json
+JSON Payload:
 {
   "event_id": "evt_101a2026",
   "version": "1.0",
@@ -44,16 +44,16 @@ Este documento define el catálogo de eventos de dominio para la plataforma **Me
     "estado": "en_espera"
   }
 }
-2. paciente.constantes_vitales.ingresadas
-Descripción: Registro de constantes fisiológicas objetivas (presión arterial, FC, SpO2, temperatura) asociadas al episodio.
 
-Productor: Contexto de Admisión y Registro de Pacientes
+---
 
-Consumidores: Contexto de Triage y Decisión Clínica, Contexto de Inferencia y Soporte de IA
+### 2. paciente.constantes_vitales.ingresadas
+- **Descripción:** Registro de constantes fisiológicas objetivas (presión arterial, FC, SpO2, temperatura) asociadas al episodio.
+- **Productor:** Contexto de Admisión y Registro de Pacientes
+- **Consumidores:** Contexto de Triage y Decisión Clínica, Contexto de Inferencia y Soporte de IA
+- **Tiempo Real (WS/SSE):** No (Evento interno de traspaso de datos).
 
-Tiempo Real (WS/SSE): No (Evento interno de traspaso de datos).
-
-JSON
+JSON Payload:
 {
   "event_id": "evt_102b2026",
   "version": "1.0",
@@ -71,16 +71,16 @@ JSON
     "nivel_conciencia": "alerta"
   }
 }
-3. triage.evaluacion.iniciada
-Descripción: Un profesional de la salud inicia formalmente la evaluación del episodio de triage.
 
-Productor: Contexto de Triage y Decisión Clínica
+---
 
-Consumidores: Contexto de Inferencia y Soporte de IA, Contexto de Auditoría y Gobernanza Médico-Legal
+### 3. triage.evaluacion.iniciada
+- **Descripción:** Un profesional de la salud inicia formalmente la evaluación del episodio de triage.
+- **Productor:** Contexto de Triage y Decisión Clínica
+- **Consumidores:** Contexto de Inferencia y Soporte de IA, Contexto de Auditoría y Gobernanza Médico-Legal
+- **Tiempo Real (WS/SSE):** Sí (Actualiza el estado a 'en_evaluacion' en el tablero).
 
-Tiempo Real (WS/SSE): Sí (Actualiza el estado a 'en_evaluacion' en el tablero).
-
-JSON
+JSON Payload:
 {
   "event_id": "evt_103c2026",
   "version": "1.0",
@@ -92,16 +92,16 @@ JSON
     "codigo_turno": "TURNO-A"
   }
 }
-4. ia.clasificacion.solicitada
-Descripción: Envío del vector de datos clínicos anonimizados a través del Filtro Zero PII hacia el motor de IA.
 
-Productor: Contexto de Triage y Decisión Clínica
+---
 
-Consumidores: Contexto de Inferencia y Soporte de IA
+### 4. ia.clasificacion.solicitada
+- **Descripción:** Envío del vector de datos clínicos anonimizados a través del Filtro Zero PII hacia el motor de IA.
+- **Productor:** Contexto de Triage y Decisión Clínica
+- **Consumidores:** Contexto de Inferencia y Soporte de IA
+- **Tiempo Real (WS/SSE):** No (Petición asíncrona backend).
 
-Tiempo Real (WS/SSE): No (Petición asíncrona backend).
-
-JSON
+JSON Payload:
 {
   "event_id": "evt_104d2026",
   "version": "1.0",
@@ -114,16 +114,16 @@ JSON
     "hash_entrada": "a1b2c3d4e5f67890123456789012345678901234567890123456789012345678"
   }
 }
-5. ia.clasificacion.sugerida
-Descripción: El motor de IA devuelve la sugerencia probabilística ESI (1 al 5) con su justificación estructurada.
 
-Productor: Contexto de Inferencia y Soporte de IA
+---
 
-Consumidores: Contexto de Triage y Decisión Clínica, Contexto de Auditoría y Gobernanza Médico-Legal
+### 5. ia.clasificacion.sugerida
+- **Descripción:** El motor de IA devuelve la sugerencia probabilística ESI (1 al 5) con su justificación estructurada.
+- **Productor:** Contexto de Inferencia y Soporte de IA
+- **Consumidores:** Contexto de Triage y Decisión Clínica, Contexto de Auditoría y Gobernanza Médico-Legal
+- **Tiempo Real (WS/SSE):** Sí (Envía la sugerencia al box de evaluación vía WebSocket).
 
-Tiempo Real (WS/SSE): Sí (Envía la sugerencia al box de evaluación vía WebSocket).
-
-JSON
+JSON Payload:
 {
   "event_id": "evt_105e2026",
   "version": "1.0",
@@ -140,16 +140,16 @@ JSON
     "fecha_hora_solicitud": "2026-10-06T20:06:05Z"
   }
 }
-6. triage.clasificacion.respaldo_aplicada (Fallback)
-Descripción: Ocurre cuando el servicio de IA presenta falla o latencia superior a 1500 ms y se conmuta automáticamente al árbol de reglas heurísticas deterministas.
 
-Productor: Contexto de Triage y Decisión Clínica
+---
 
-Consumidores: Contexto de Auditoría y Gobernanza Médico-Legal
+### 6. triage.clasificacion.respaldo_aplicada
+- **Descripción:** Ocurre cuando el servicio de IA presenta falla o latencia superior a 1500 ms y se conmuta automáticamente al árbol de reglas heurísticas deterministas.
+- **Productor:** Contexto de Triage y Decisión Clínica
+- **Consumidores:** Contexto de Auditoría y Gobernanza Médico-Legal
+- **Tiempo Real (WS/SSE):** Sí (Alerta visual al profesional sobre la activación del modo contingencia).
 
-Tiempo Real (WS/SSE): Sí (Alerta visual al profesional sobre la activación del modo contingencia).
-
-JSON
+JSON Payload:
 {
   "event_id": "evt_106f2026",
   "version": "1.0",
@@ -164,16 +164,16 @@ JSON
     "latencia_ms": 1550
   }
 }
-7. triage.evaluacion.confirmada
-Descripción: El profesional de salud valida y confirma la categoría ESI final del paciente en la decisión clínica.
 
-Productor: Contexto de Triage y Decisión Clínica
+---
 
-Consumidores: Contexto de Admisión y Registro, Contexto de Auditoría y Gobernanza Médico-Legal
+### 7. triage.evaluacion.confirmada
+- **Descripción:** El profesional de salud valida y confirma la categoría ESI final del paciente en la decisión clínica.
+- **Productor:** Contexto de Triage y Decisión Clínica
+- **Consumidores:** Contexto de Admisión y Registro, Contexto de Auditoría y Gobernanza Médico-Legal
+- **Tiempo Real (WS/SSE):** Sí (Asigna prioridad en la lista de espera).
 
-Tiempo Real (WS/SSE): Sí (Asigna prioridad en la lista de espera).
-
-JSON
+JSON Payload:
 {
   "event_id": "evt_107g2026",
   "version": "1.0",
@@ -188,16 +188,16 @@ JSON
     "fecha_hora_decision": "2026-10-06T20:08:00Z"
   }
 }
-8. triage.override.ejecutado
-Descripción: Modificación manual explícita (sobrescritura) efectuada por el facultativo sobre la sugerencia de la IA, con su debida justificación médica.
 
-Productor: Contexto de Triage y Decisión Clínica
+---
 
-Consumidores: Contexto de Auditoría y Gobernanza Médico-Legal
+### 8. triage.override.ejecutado
+- **Descripción:** Modificación manual explícita (sobrescritura) efectuada por el facultativo sobre la sugerencia de la IA, con su debida justificación médica.
+- **Productor:** Contexto de Triage y Decisión Clínica
+- **Consumidores:** Contexto de Auditoría y Gobernanza Médico-Legal
+- **Tiempo Real (WS/SSE):** Sí (Registra discrepancia Humano-IA en tiempo real).
 
-Tiempo Real (WS/SSE): Sí (Registra discrepancia Humano-IA en tiempo real).
-
-JSON
+JSON Payload:
 {
   "event_id": "evt_108h2026",
   "version": "1.0",
@@ -214,16 +214,16 @@ JSON
     "fecha_hora_decision": "2026-10-06T20:08:15Z"
   }
 }
-9. paciente.atencion.iniciada
-Descripción: Inicio del proceso de atención médica en box de urgencia.
 
-Productor: Contexto de Triage y Decisión Clínica
+---
 
-Consumidores: Contexto de Admisión y Registro, Contexto de Auditoría y Gobernanza Médico-Legal
+### 9. paciente.atencion.iniciada
+- **Descripción:** Inicio del proceso de atención médica en box de urgencia.
+- **Productor:** Contexto de Triage y Decisión Clínica
+- **Consumidores:** Contexto de Admisión y Registro, Contexto de Auditoría y Gobernanza Médico-Legal
+- **Tiempo Real (WS/SSE):** Sí (Actualiza estado a 'en_atencion' y retira de lista de espera activa).
 
-Tiempo Real (WS/SSE): Sí (Actualiza estado a 'en_atencion' y retira de lista de espera activa).
-
-JSON
+JSON Payload:
 {
   "event_id": "evt_109i2026",
   "version": "1.0",
@@ -235,16 +235,16 @@ JSON
     "estado": "en_atencion"
   }
 }
-10. notificacion.alerta.disparada
-Descripción: Generación de alerta crítica en el tablero de urgencias ante el ingreso de pacientes clasificados con ESI 1 o ESI 2.
 
-Productor: Contexto de Triage y Decisión Clínica
+---
 
-Consumidores: Tablero Frontend (WebSocket / Redis)
+### 10. notificacion.alerta.disparada
+- **Descripción:** Generación de alerta crítica en el tablero de urgencias ante el ingreso de pacientes clasificados con ESI 1 o ESI 2.
+- **Productor:** Contexto de Triage y Decisión Clínica
+- **Consumidores:** Tablero Frontend (WebSocket / Redis)
+- **Tiempo Real (WS/SSE):** Sí (Emisión inmediata de señal sonora/visual).
 
-Tiempo Real (WS/SSE): Sí (Emisión inmediata de señal sonora/visual).
-
-JSON
+JSON Payload:
 {
   "event_id": "evt_110j2026",
   "version": "1.0",
@@ -256,16 +256,16 @@ JSON
     "rol_destino": "medico"
   }
 }
-11. audit.registro.creado
-Descripción: Registro inmutable (append-only) generado en la bitácora de auditoría con la sugerencia de IA, el prompt anonimizado enviado, la decisión final y encadenamiento criptográfico.
 
-Productor: Contexto de Auditoría y Gobernanza Médico-Legal
+---
 
-Consumidores: Almacenamiento Seguro / Sistema Legal
+### 11. audit.registro.creado
+- **Descripción:** Registro inmutable (append-only) generado en la bitácora de auditoría con la sugerencia de IA, el prompt anonimizado enviado, la decisión final y encadenamiento criptográfico.
+- **Productor:** Contexto de Auditoría y Gobernanza Médico-Legal
+- **Consumidores:** Almacenamiento Seguro / Sistema Legal
+- **Tiempo Real (WS/SSE):** No (Persistencia asíncrona).
 
-Tiempo Real (WS/SSE): No (Persistencia asíncrona).
-
-JSON
+JSON Payload:
 {
   "event_id": "evt_111k2026",
   "version": "1.0",
@@ -285,16 +285,16 @@ JSON
     "fecha_hora_evento": "2026-10-06T20:08:16Z"
   }
 }
-12. paciente.alta.registrada
-Descripción: Finalización formal del flujo de urgencia y alta o derivación del paciente.
 
-Productor: Contexto de Admisión y Registro de Pacientes
+---
 
-Consumidores: Contexto de Triage y Decisión Clínica
+### 12. paciente.alta.registrada
+- **Descripción:** Finalización formal del flujo de urgencia y alta o derivación del paciente.
+- **Productor:** Contexto de Admisión y Registro de Pacientes
+- **Consumidores:** Contexto de Triage y Decisión Clínica
+- **Tiempo Real (WS/SSE):** Sí (Cierra el estado a 'cerrado' en el tablero).
 
-Tiempo Real (WS/SSE): Sí (Cierra el estado a 'cerrado' en el tablero).
-
-JSON
+JSON Payload:
 {
   "event_id": "evt_112l2026",
   "version": "1.0",
