@@ -1,5 +1,7 @@
 # Catálogo de Eventos - MediTriage
 
+Este documento define el catálogo de eventos de dominio para la plataforma **MediTriage**, detallando para cada evento su versión, contexto productor, contextos consumidores, indicador de transmisión en tiempo real (vía WebSockets/SSE o Redis) y el esquema de payload estructurado sin datos personales identificables (**Zero PII**), en estricta coherencia con la delimitación de Bounded Contexts (Tarjeta 8) y el Diagrama Entidad-Relación (Tarjeta 9).
+
 ---
 
 ## Resumen del Catálogo de Eventos
