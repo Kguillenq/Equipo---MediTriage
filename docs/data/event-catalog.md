@@ -9,8 +9,8 @@ Catálogo de eventos de dominio para la arquitectura orientada a eventos de Medi
 | Evento | Versión | Contexto Productor | Contextos Consumidores | Notificación Tiempo Real (WS/SSE) |
 | :--- | :---: | :--- | :--- | :---: |
 | `paciente.registro.completado` | v1.0 | Admisión y Registro de Pacientes | Triage y Decisión Clínica, Auditoría y Gobernanza | Sí (Actualiza sala) |
-| `paciente.constantes_vitales.ingresadas` | v1.0 | Admisión y Registro de Pacientes | Triage y Decisión Clínica, Inferencia y Soporte de IA | No (Evento interno) |
-| `triage.evaluacion.iniciada` | v1.0 | Triage y Decisión Clínica | Inferencia y Soporte de IA, Auditoría y Gobernanza | Sí (Estado en evaluación) |
+| `paciente.constantes_vitales.ingresadas` | v1.0 | Triage y Decisión Clínica | Contexto de Inferencia y Soporte de IA | No (Evento interno) |
+| `triage.evaluacion.iniciada` | v1.0 | Triage y Decisión Clínica | Inferencia y Soporte de IA, Auditoría y Gobernanza | Sí (Estado en espera) |
 | `ia.clasificacion.solicitada` | v1.0 | Triage y Decisión Clínica | Inferencia y Soporte de IA | No (Interno asíncrono) |
 | `ia.clasificacion.sugerida` | v1.0 | Inferencia y Soporte de IA | Triage y Decisión Clínica, Auditoría y Gobernanza | Sí (Sugerencia ESI) |
 | `triage.clasificacion.respaldo_aplicada` | v1.0 | Triage y Decisión Clínica | Auditoría y Gobernanza | Sí (Alerta de Fallback) |
@@ -54,11 +54,8 @@ Catálogo de eventos de dominio para la arquitectura orientada a eventos de Medi
 ### 2. paciente.constantes_vitales.ingresadas
 
 - **Descripción:** Registro de constantes fisiológicas objetivas (presión arterial, FC, SpO2, temperatura) asociadas al episodio.
-
-- **Productor:** Contexto de Admisión y Registro de Pacientes
-
-- **Consumidores:** Contexto de Triage y Decisión Clínica, Contexto de Inferencia y Soporte de IA
-
+- **Productor:** Contexto de Triage y Decisión Clínica
+- **Consumidores:** Contexto de Inferencia y Soporte de IA
 - **Tiempo Real (WS/SSE):** No (Evento interno de traspaso de datos).
 
 ```json
@@ -66,7 +63,7 @@ Catálogo de eventos de dominio para la arquitectura orientada a eventos de Medi
   "event_id": "evt_102b2026",
   "version": "1.0",
   "timestamp": "2026-10-06T20:02:00Z",
-  "producer": "admision-service",
+  "producer": "triage-service",
   "data": {
     "signo_id": "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
     "episodio_id": "550e8400-e29b-41d4-a716-446655440000",
@@ -91,7 +88,7 @@ Catálogo de eventos de dominio para la arquitectura orientada a eventos de Medi
 
 - **Consumidores:** Contexto de Inferencia y Soporte de IA, Contexto de Auditoría y Gobernanza Médico-Legal
 
-- **Tiempo Real (WS/SSE):** Sí (Actualiza el estado a 'en_evaluacion' en el tablero).
+- **Tiempo Real (WS/SSE):** Sí (Mantiene el estado 'en_espera' en el tablero).
 
 ```json
 {
@@ -102,7 +99,8 @@ Catálogo de eventos de dominio para la arquitectura orientada a eventos de Medi
   "data": {
     "episodio_id": "550e8400-e29b-41d4-a716-446655440000",
     "usuario_id_registro": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
-    "codigo_turno": "TURNO-A"
+    "codigo_turno": "TURNO-A",
+    "estado": "en_espera"
   }
 }
 ```
