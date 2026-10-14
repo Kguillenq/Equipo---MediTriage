@@ -8,4 +8,10 @@ venv/
 __pycache__/
 *.pyc
 .env
-"@ | Set-Content -Path .gitignore -Encoding utf8
+
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
