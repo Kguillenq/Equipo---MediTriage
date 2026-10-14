@@ -29,10 +29,33 @@ paths:
       tags:
         - Pacientes
       summary: Registra un nuevo paciente
+      description: Crea un paciente en admisión. Requiere consentimiento informado y acepta Idempotency-Key para reintentos seguros
       operationId: createPatient
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKeyHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientInput'
+            examples:
+              PatientCreate:
+                $ref: '#/components/examples/PatientCreate'
       responses:
         '201':
           description: Paciente creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+              example:
+                patient_id: "550e8400-e29b-41d4-a716-446655440000"
+                rut: "11.111.111-1"
+                name: "Juan Perez"
+                birth_date: "1990-05-15"
+                biological_sex: "male"
+                has_consent: true
         '400':
           $ref: '#/components/responses/BadRequest'
         '409':
@@ -42,6 +65,7 @@ paths:
       tags:
         - Pacientes
       summary: Obtiene la lista de pacientes
+      description: Devuelve la lista de pacientes
       operationId: listPatients
       parameters:
         - name: skip
@@ -73,17 +97,67 @@ paths:
       tags:
         - Triages
       summary: Crea una evaluación de triage y consulta IA
+      description: Crea una evaluación de triage con los signos vitales y síntomas, y pide a la IA un nivel ESI sugerido con su justificación
       operationId: createTriage
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKeyHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TriageInput'
+            examples:
+              TriageCreate:
+                $ref: '#/components/examples/TriageCreate'
       responses:
         '201':
           description: Triage creado y evaluado por IA
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Triage'
+              example:
+                triage_id: "660e8400-e29b-41d4-a716-446655440001"
+                patient:
+                  patient_id: "550e8400-e29b-41d4-a716-446655440000"
+                  age: 36
+                  biological_sex: male
+                status: waiting
+                symptoms:
+                  presion_sistolica: 120
+                  presion_diastolica: 80
+                  frecuencia_cardiaca: 90
+                  frecuencia_respiratoria: 18
+                  temperatura: 37.0
+                  saturacion_oxigeno: 98
+                  escala_dolor: 3
+                  nivel_conciencia: Alerta
+                  sintomas:
+                    - codigo_sintoma: "SINT-034"
+                      severidad: moderada
+                      tiempo_evolucion_horas: 2
+                ai_recommendation:
+                  nivel_esi_sugerido: 3
+                  justificacion_ia: "Signos vitales estables y síntomas de severidad moderada."
+                  modelo_usado: "claude-3-haiku"
+                  tiempo_respuesta: "2026-10-01T12:00:00Z"
+                final_esi_level: null
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
         '422':
           $ref: '#/components/responses/ValidationError'
-
+        '500':
+          $ref: '#/components/responses/InternalServerError'
     get:
       tags:
         - Triages
       summary: Lista de triages activos (Tablero Médico)
+      description: Devuelve los triages activos para el tablero médico
       operationId: listTriages
       parameters:
         - name: skip
@@ -120,6 +194,7 @@ paths:
       tags:
         - Triages
       summary: Actualiza el estado de flujo del paciente
+      description: Cambia el estado del paciente en el flujo de atención
       operationId: updateTriageStatus
       parameters:
         - name: triage_id
@@ -138,6 +213,7 @@ paths:
       tags:
         - Triages
       summary: Sobrescribe el nivel ESI sugerido por la IA
+      description: Permite al personal médico reemplazar el nivel ESI sugerido por la IA, indicando una justificación clínica. Queda registrado en la auditoría
       operationId: overrideTriageEsi
       parameters:
         - name: triage_id
@@ -158,6 +234,7 @@ paths:
       tags:
         - Auditoría
       summary: Obtiene el historial inmutable de discrepancias
+      description: Devuelve el historial de auditoría con filtros por discrepancia
       operationId: listAuditLogs
       parameters:
         - name: skip
@@ -318,7 +395,7 @@ components:
       properties:
         presion_sistolica: { type: integer, minimum: 40, maximum: 260, description: "mmHg" }
         presion_diastolica: { type: integer, minimum: 20, maximum: 200, description: "mmHg" }
-        frecuencia_cardiaca: { type: integer, minimum: 20, maximum: 250, description: "bpm" }
+        frecuencia_cardiaca: { type: integer, minimum: 20, maximum: 300, description: "bpm" }
         frecuencia_respiratoria: { type: integer, minimum: 5, maximum: 80, description: "rpm" }
         temperatura: { type: number, format: float, minimum: 30, maximum: 43, description: "°C" }
         saturacion_oxigeno: { type: integer, minimum: 0, maximum: 100, description: "%" }
@@ -526,15 +603,9 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/Problem'
-          example:
-            type: "https://api.meditriage.com/problems/validation-error"
-            title: "Error de validación"
-            status: 422
-            detail: "Los signos vitales enviados no son válidos."
-            instance: "/api/v1/triages"
-            errors:
-              - field: "vital_signs.heart_rate"
-                message: "Debe estar entre 20 y 300."
+          examples:
+            ValidationError422:
+              $ref: '#/components/examples/ValidationError422'
     InternalServerError:
       description: Error inesperado del servidor. No expone detalles internos ni datos personales.
       content:
@@ -626,8 +697,22 @@ components:
         type: string
         format: uuid
         example: "3f8a6c1e-5b7d-4e2a-9c41-2d8f0a7b6e13"
+  
+  examples:
+    PatientCreate:
+      summary: Ejemplo de registro de paciente
+      externalValue: './examples/patient-create.json'
+
+    TriageCreate:
+      summary: Ejemplo de creación de triage
+      externalValue: './examples/triage-create.json'
+
+    ValidationError422:
+      summary: Ejemplo de error de validación
+      externalValue: './examples/validation-error-422.json'
 
   securitySchemes:
+    # Método de autenticación para el Login de FastAPI
     BearerAuth:
       type: http
       scheme: bearer
