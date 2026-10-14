@@ -12,12 +12,13 @@ services:
       - ./backend:/app
     environment:
       - DATABASE_URL=postgresql://meditriage_user:meditriage_pass@db:5432/meditriage_db?sslmode=require
+      - PORT=8000
     depends_on:
       - db
       - redis
 
   db:
-    image: postgres:15-alpine
+    image: postgres:16-alpine
     container_name: meditriage-db
     restart: always
     environment:
