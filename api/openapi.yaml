@@ -11,8 +11,10 @@ servers:
     description: Servidor Local (Desarrollo)
   - url: https://api.meditriage.com/v1
     description: Servidor de Producción
+
 security:
   - BearerAuth: []
+
 tags:
   - name: Pacientes
     description: Gestión de pacientes en admisión y sala de espera.
@@ -56,14 +58,8 @@ paths:
                 has_consent: true
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
         '409':
           $ref: '#/components/responses/Conflict'
-        '422':
-          $ref: '#/components/responses/ValidationError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
 
     get:
       tags:
@@ -95,18 +91,6 @@ paths:
       responses:
         '200':
           description: Lista de pacientes devuelta con éxito
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Patient'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
 
   /triages:
     post:
@@ -189,11 +173,14 @@ paths:
         - name: status
           in: query
           schema:
-            $ref: '#/components/schemas/TriageStatus'
+            type: string
+            enum: [waiting, attending, discharged]
         - name: esi_level
           in: query
           schema:
-            $ref: '#/components/schemas/EsiLevel'
+            type: integer
+            minimum: 1
+            maximum: 5
         - name: sort
           in: query
           schema:
@@ -201,18 +188,6 @@ paths:
       responses:
         '200':
           description: Lista de triages priorizados
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Triage'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
 
   /triages/{triage_id}:
     patch:
@@ -227,29 +202,11 @@ paths:
           required: true
           schema:
             type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TriageStatusUpdate'
       responses:
         '200':
           description: Estado actualizado exitosamente
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Triage'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-        '422':
-          $ref: '#/components/responses/ValidationError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
 
   /triages/{triage_id}/overrides:
     post:
@@ -264,32 +221,13 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/IdempotencyKeyHeader'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TriageOverride'
       responses:
         '201':
           description: Sobrescritura registrada exitosamente
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Triage'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '422':
-          $ref: '#/components/responses/ValidationError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
 
   /audit-logs:
     get:
@@ -320,39 +258,21 @@ paths:
       responses:
         '200':
           description: Historial de auditoría devuelto
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AuditLogEntry'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/Forbidden'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+          description: Permisos insuficientes (requiere rol de auditor)
 
 components:
   schemas:
-    # ---------- Enums compartidos ----------
-    EsiLevel:
-      type: integer
-      enum: [1, 2, 3, 4, 5]
-      description: Categoría de triage según el Emergency Severity Index (1 = emergencia, 5 = no urgente).
-
     NivelConciencia:
       type: string
-      enum: [Alerta, Verbal, Dolor, Inconsciente]
-      description: Escala AVDI.
-
+      enum: [alerta, verbal, dolor, inconsciente]
+    EsiLevel:
+      type: integer
+      minimum: 1
+      maximum: 5
     TriageStatus:
       type: string
       enum: [waiting, attending, discharged]
-
-    # ---------- Pacientes ----------
     Patient:
       type: object
       required: [patient_id, rut, name]
@@ -653,7 +573,6 @@ components:
                 example: "Debe estar entre 20 y 300."
 
   responses:
-    # Respuestas estándar de error para reutilizar (todas en formato RFC 7807)
     NotFound:
       description: El recurso solicitado no fue encontrado.
       content:
@@ -741,7 +660,6 @@ components:
             instance: "/api/v1/patients"
 
   parameters:
-    # Parámetros que se repiten en varias rutas (como la paginación)
     SkipParam:
       name: skip
       in: query
@@ -799,3 +717,4 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+      
