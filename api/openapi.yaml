@@ -34,9 +34,9 @@ paths:
         '201':
           description: Paciente creado exitosamente
         '400':
-          description: Datos inválidos
+          $ref: '#/components/responses/BadRequest'
         '409':
-          description: Conflicto - Paciente ya existe
+          $ref: '#/components/responses/Conflict'
 
     get:
       tags:
@@ -78,7 +78,7 @@ paths:
         '201':
           description: Triage creado y evaluado por IA
         '422':
-          description: Error de validación en signos vitales
+          $ref: '#/components/responses/ValidationError'
 
     get:
       tags:
@@ -131,7 +131,7 @@ paths:
         '200':
           description: Estado actualizado exitosamente
         '404':
-          description: Evaluación no encontrada
+          $ref: '#/components/responses/NotFound'
 
   /triages/{triage_id}/overrides:
     post:
@@ -149,9 +149,9 @@ paths:
         '201':
           description: Sobrescritura registrada exitosamente
         '400':
-          description: Falta justificación clínica
+          $ref: '#/components/responses/BadRequest'
         '404':
-          description: Evaluación no encontrada
+          $ref: '#/components/responses/NotFound'
 
   /audit-logs:
     get:
@@ -186,6 +186,16 @@ paths:
 
 components:
   schemas:
+    NivelConciencia:
+      type: string
+      enum: [alerta, verbal, dolor, inconsciente]
+    EsiLevel:
+      type: integer
+      minimum: 1
+      maximum: 5
+    TriageStatus:
+      type: string
+      enum: [waiting, attending, discharged]
     Patient:
       type: object
       required: [patient_id, rut, name]
