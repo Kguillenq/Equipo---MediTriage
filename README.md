@@ -236,7 +236,7 @@ kubectl run carga -n triageops --rm -it --image=busybox:1.36 --restart=Never -- 
 
 ### Evidencia
 
-En la prueba el HPA subió de 2 a 8 réplicas bajo carga y volvió a 2 al cortarla. Los registros del estado antes, durante y después están en `docs/evidencia-hpa/`: `01-antes.txt`, `02-durante.txt` y `03-despues.txt`.
+En la prueba el HPA subió de 2 a 8 réplicas bajo carga y volvió a 2 al cortarla. Los registros del estado antes, durante y después están en `docs/data/evidencia-hpa/`: `01-antes.txt`, `02-durante.txt` y `03-despues.txt`.
 
 Cambio de réplicas durante la prueba:
 
