@@ -214,3 +214,34 @@ Para levantar un servidor mock local basado en el contrato OpenAPI de MediTriage
 ```bash
 npx @stoplight/prism-cli mock api/openapi.yaml -p 4010
 ```
+
+---
+
+## Autoescalado (HPA)
+
+El backend se despliega con Kustomize y escala automáticamente según el uso de CPU (mínimo 2 réplicas, máximo 10, objetivo 50%).
+
+Aplicar los manifiestos:
+
+```bash
+kubectl apply -k k8s/
+```
+
+Probar el HPA con carga sintética (script en `scripts/load/hpa-load.sh`):
+
+```bash
+kubectl get hpa -n triageops -w
+kubectl run carga -n triageops --rm -it --image=busybox:1.36 --restart=Never -- sh -c "for i in 1 2 3 4 5; do (while true; do wget -q -O- http://meditriage-backend/api/v1/health >/dev/null; done) & done; wait"
+```
+
+### Evidencia
+
+En la prueba el HPA subió de 2 a 8 réplicas bajo carga y volvió a 2 al cortarla. Los registros del estado antes, durante y después están en `docs/evidencia-hpa/`: `01-antes.txt`, `02-durante.txt` y `03-despues.txt`.
+
+Cambio de réplicas durante la prueba:
+
+![HPA escalando](docs/evidencia-hpa/hpa-watch.png)
+
+Estado final del namespace (`kubectl get all -n triageops`):
+
+![kubectl get all](docs/evidencia-hpa/get-all.png)
