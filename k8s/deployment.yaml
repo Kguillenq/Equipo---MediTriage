@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: meditriage-backend@sha256:a835fc25f9b69177fe21f6d4b735a1be0f4afb80ddd8ea2c180c10c70f896dcc
+          image: meditriage-backend@sha256:bacad97b3abf0d0739e227dcc4970f93c85ab35e834a20c0f423beadf5da0cac
           ports:
             - containerPort: 8000
           envFrom:
