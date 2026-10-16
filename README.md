@@ -240,8 +240,8 @@ En la prueba el HPA subió de 2 a 8 réplicas bajo carga y volvió a 2 al cortar
 
 Cambio de réplicas durante la prueba:
 
-![HPA escalando](docs/evidencia-hpa/hpa-watch.png)
+![HPA escalando](docs/data/evidencia-hpa/hpa-watch.png)
 
 Estado final del namespace (`kubectl get all -n triageops`):
 
-![kubectl get all](docs/evidencia-hpa/get-all.png)
+![kubectl get all](docs/data/evidencia-hpa/get-all.png)
