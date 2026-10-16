@@ -212,5 +212,5 @@ Los mocks pueden utilizarse en pruebas unitarias aisladas cuando sea necesario v
 Para levantar un servidor mock local basado en el contrato OpenAPI de MediTriage y probar los endpoints antes de desplegar el backend:
 
 ```bash
-npx @stoplight/prism-cli mock API/openapi.yaml -p 4010
+npx @stoplight/prism-cli mock api/openapi.yaml -p 4010
 ```
